@@ -1,5 +1,4 @@
 from textnode import TextType,TextNode
-import textnode
 
 
 class HTMLNode:
@@ -73,5 +72,42 @@ def text_node_to_html_node(text_node:TextNode):
         case _:
             raise Exception("undefined type")
         
+
+def split_nodes_delimiter(old_nodes,delimiter,text_type):
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
+            continue
+
+        text =node.text
+        start = 0 
+        while start < len(text):
+            delimiter_start = text.find(delimiter, start)
+            if delimiter_start == -1:
+                new_nodes.append(TextNode(text[start:], TextType.TEXT))
+                break
+
+            if delimiter_start > start:
+                new_nodes.append(TextNode(text[start:delimiter_start], TextType.TEXT))
+
+            delimiter_end = text.find(delimiter, delimiter_start + len(delimiter))
+            if delimiter_end == -1:
+                raise Exception(f"Missing closing delimiter '{delimiter}' in text: '{text}'")
+
+            formatted_text = text[delimiter_start + len(delimiter): delimiter_end]
+            new_nodes.append(TextNode(formatted_text, text_type))
+
+            start = delimiter_end + len(delimiter)
+
+    return new_nodes
+
+
+
+
+
+
+
+
 
 
