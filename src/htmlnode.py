@@ -174,3 +174,23 @@ def text_to_textnodes(text):
     nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
     nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
     return nodes
+
+
+def markdown_to_blocks(markdown):
+    if not isinstance(markdown, str):
+        raise TypeError("Argument must be a string")
+
+    blocks = []
+
+    for block in markdown.split('\n\n'):
+        stripped_block = block.strip()
+        if stripped_block:
+            blocks.append(stripped_block)
+
+    return blocks
+
+
+
+
+
+
