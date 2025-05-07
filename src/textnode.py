@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum,auto
 
 
 class TextType(Enum):
@@ -8,6 +8,14 @@ class TextType(Enum):
     ITALIC = "italic"
     CODE = "code"
     IMAGE = "image"
+
+class BlockType(Enum):
+    PARAGRAPH = auto()
+    HEADING = auto()
+    CODE = auto()
+    QUOTE = auto()
+    UNORDERED_LIST = auto()
+    ORDERED_LIST = auto()
 
 
 class TextNode:
@@ -22,4 +30,8 @@ class TextNode:
 
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+
+
+
+
 

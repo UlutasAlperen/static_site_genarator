@@ -1,4 +1,4 @@
-from textnode import TextType,TextNode
+from textnode import TextType,TextNode,BlockType
 import re
 
 class HTMLNode:
@@ -190,6 +190,33 @@ def markdown_to_blocks(markdown):
     return blocks
 
 
+def block_to_block_type(markdown_text):
+    lines = markdown_text.split("\n")
+
+    if lines[0] == "```" and lines[-1] == "```":
+        return BlockType.CODE
+
+    if lines[0].startswith("#"):
+        i = 0
+        while i < len(lines[0]) and lines[0][i] == "#":
+            i += 1
+        if 1 <= i <= 6 and i < len(lines[0]) and lines[0][i] == " ":
+            return BlockType.HEADING
+
+    if all(line.startswith(">") for line in lines):
+        return BlockType.QUOTE
+
+    if all(line.startswith("- ") for line in lines):
+        return BlockType.UNORDERED_LIST
+
+    for i, line in enumerate(lines):
+        expected_prefix = f"{i + 1}. "
+        if not line.startswith(expected_prefix):
+            break
+    else:
+        return BlockType.ORDERED_LIST
+
+    return BlockType.PARAGRAPH
 
 
 
